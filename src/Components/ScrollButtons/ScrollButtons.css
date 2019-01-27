@@ -1,0 +1,11 @@
+.scroll-buttons {
+    display: flex;
+    justify-content: center;
+}
+.scroll-buttons button {
+    background-color: lightgrey;
+    border-color: darkgrey;
+}
+.scroll-buttons button:disabled {
+    color:rgb(158, 158, 158);
+}

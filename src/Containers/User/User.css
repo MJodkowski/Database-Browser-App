@@ -1,0 +1,31 @@
+.user {
+    width: 80%;
+    padding: 5px 10px;
+    margin: 0 auto;
+    background-color: lightgrey;
+    cursor: pointer;
+}
+.user-header {
+    margin: 0;
+    font-size: 20px;
+}
+.user-list-item {
+    margin-bottom: 5px;
+ }
+.user-header-container {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+.delete-button {
+    border-color: darkgrey;
+    background-color: lightgrey;
+}
+.user-data-list {
+    margin: 20px 0;
+    width: 100%;
+    font-size: 12px;
+}
+.user-data-key {
+    font-weight: bold;
+}
