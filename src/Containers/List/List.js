@@ -55,20 +55,26 @@ class List extends Component {
         }  
     }
     scrollButton = (direction, increment) => {
-        if (direction === 'left' && this.state.pageButtons[0] - increment >= 1) {
-            this.setState({pageButtons: this.state.pageButtons.map(elem =>
-                elem -= increment),
-                page: this.state.page < this.state.pageButtons[1] - increment ? this.state.page : this.state.pageButtons[1] - increment});
-        } else if ((direction === 'left' && (this.state.pageButtons[0] - increment) < 1) || direction === 'endleft')  {
-            this.setState({page: 1,
-                pageButtons: [1, 10]});
-        } else if (direction === 'right' && this.state.pageButtons[1] + increment <= this.state.pages) {
-            this.setState({pageButtons: this.state.pageButtons.map(elem =>
-                elem += increment),
-                page: this.state.page > this.state.pageButtons[0] + increment ? this.state.page : this.state.pageButtons[0] + increment});
-        } else if ((direction === 'right' && (this.state.pageButtons[1] + increment) > this.state.pages) || direction === 'endright') {
-            this.setState({page: this.state.pages,
-                pageButtons: [this.state.pages - 9, this.state.pages]});
+        if (direction === 'left' || direction === 'endleft') {
+            if (this.state.pageButtons[0] - increment >= 1) {
+                this.setState({pageButtons: this.state.pageButtons.map(elem =>
+                    elem -= increment),
+                    page: this.state.page < this.state.pageButtons[1] - increment ? 
+                        this.state.page : this.state.pageButtons[1] - increment});
+            } else if (((this.state.pageButtons[0] - increment) < 1) || direction === 'endleft') {
+                this.setState({page: 1, 
+                    pageButtons: [1, 10]
+                });
+            }
+        } else if (direction === 'right' || direction === 'endright')
+            if (this.state.pageButtons[1] + increment <= this.state.pages) {
+                this.setState({pageButtons: this.state.pageButtons.map(elem =>
+                    elem += increment),
+                    page: this.state.page > this.state.pageButtons[0] + increment ? 
+                        this.state.page : this.state.pageButtons[0] + increment});
+            } else if (((this.state.pageButtons[1] + increment) > this.state.pages) || direction === 'endright') {
+                this.setState({page: this.state.pages,
+                    pageButtons: [this.state.pages - 9, this.state.pages]});
         }
     }
     render() {

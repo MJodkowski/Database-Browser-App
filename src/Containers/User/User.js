@@ -16,11 +16,6 @@ class User extends Component {
             } catch (err) {
                 console.log(err);
             }
-        // } else if (!this.state.expanded) {
-        //     this.setState({expanded: true});
-        // } else {
-        //     this.setState({expanded: false});
-        // };
         } else {
             this.setState({expanded: !this.state.expanded});
         }
@@ -31,14 +26,14 @@ class User extends Component {
         for (let key in data) {
             dataList.push(<tr key={uniqueKey}><td key={uniqueKey + 50} className="user-data-key">{key.charAt(0).toUpperCase() + key.substr(1).replace(/_/, ' ')}: </td><td key={uniqueKey + 100}>{data[key]}</td></tr>);
             uniqueKey++;
-        };
+        }
         return dataList;
     }
     render() {
         let dataList = null;
         if (this.state.userData && this.state.expanded) {
             dataList = this.listData(this.state.userData);
-        };
+        }
         return (
             <li className="user-list-item">
                 <div className="user" onClick={this.expandPerson}>
