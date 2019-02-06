@@ -7,17 +7,23 @@ class User extends Component {
             expanded: false,
             userData: null
     }
-    expandPerson = () => {
+    expandPerson = async () => {
         if (!this.state.expanded && !this.state.userData) {
             this.setState({expanded: true});
-            HTTP.get(`https://contact-browser.herokuapp.com/contact/${this.props.id}`)
-            .then(results => this.setState({userData: results}))
-            .catch(err => console.log(err));
-        } else if (!this.state.expanded) {
-            this.setState({expanded: true});
+            try {
+                let results = await HTTP.get(`https://contact-browser.herokuapp.com/contact/${this.props.id}`);
+                this.setState({userData: results});
+            } catch (err) {
+                console.log(err);
+            }
+        // } else if (!this.state.expanded) {
+        //     this.setState({expanded: true});
+        // } else {
+        //     this.setState({expanded: false});
+        // };
         } else {
-            this.setState({expanded: false});
-        };
+            this.setState({expanded: !this.state.expanded});
+        }
     }
     listData = (data) => {
         let dataList = [];

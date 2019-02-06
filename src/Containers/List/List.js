@@ -6,20 +6,21 @@ import ScrollButtons from '../../Components/ScrollButtons/ScrollButtons';
 import './List.css';
 
 class List extends Component {
-    componentDidMount() {
-        HTTP.get('https://contact-browser.herokuapp.com/contacts')
-            .then((results) => {
-                const users = Object.keys(results).map(key => {
-                    return {
-                        id: key,
-                        name: results[key]
-                    };
-                });
+    async componentDidMount() {
+        try {
+            let users = await HTTP.get('https://contact-browser.herokuapp.com/contacts');
+            users = Object.keys(users).map(key => {
+                return {
+                    id: key,
+                    name:users[key]
+                };
+            });
             this.setState({users: users, 
                 pageButtons: [1, Math.min(Math.ceil(users.length / 10), 10)],
                 pages: Math.ceil(users.length / 10)});
-            })
-            .catch(err => console.log(err));
+        } catch(err) {
+            console.log(err);
+        }
     }
     state = {
         users: null,
@@ -35,22 +36,23 @@ class List extends Component {
             } else { 
                 buttons.push(<PageButton number={x} key={x} clickHandler={this.changePage} />)
             }
-        };
+        }
         return buttons;
     }
     changePage = (number) => {
         this.setState({page: number});
     }
-    deleteEntry = (e, id) => {
+    deleteEntry = async (e, id) => {
         e.stopPropagation();
         const removedUserArray = this.state.users;
-        HTTP.delete('https://contact-browser.herokuapp.com/contact/', id)
-            .then(() => {
-                removedUserArray.splice(removedUserArray.findIndex(elem => {
-                return elem.id === id}), 1);
+        try {
+            await HTTP.delete('https://contact-browser.herokuapp.com/contact/', id);
+            removedUserArray.splice(removedUserArray.findIndex(elem => {
+                    return elem.id === id}), 1);
                 this.setState({users: removedUserArray});
-            })
-            .catch(err => console.log(err));  
+        } catch (err) {
+            console.log(err);
+        }  
     }
     scrollButton = (direction, increment) => {
         if (direction === 'left' && this.state.pageButtons[0] - increment >= 1) {
@@ -67,7 +69,7 @@ class List extends Component {
         } else if ((direction === 'right' && (this.state.pageButtons[1] + increment) > this.state.pages) || direction === 'endright') {
             this.setState({page: this.state.pages,
                 pageButtons: [this.state.pages - 9, this.state.pages]});
-        };
+        }
     }
     render() {
         let users;
@@ -75,7 +77,7 @@ class List extends Component {
             users = this.state.users.slice((this.state.page - 1) * 10, this.state.page * 10).map(user => {
                 return <User name={user.name} key={user.id} id={user.id} delete={(e, id) => this.deleteEntry(e, id)} />
             });
-        };
+        }
         return (
         <div>
             <ul className="user-list">
