@@ -2,10 +2,12 @@
     display: flex;
     justify-content: center;
 }
-.scroll-buttons button {
+.scroll-button {
     background-color: lightgrey;
     border-color: darkgrey;
+    padding: 3px;
+    width: 40px;
 }
-.scroll-buttons button:disabled {
+.scroll-button button:disabled {
     color:rgb(158, 158, 158);
 }

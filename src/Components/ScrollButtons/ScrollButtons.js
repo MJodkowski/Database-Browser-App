@@ -7,13 +7,13 @@ const scrollButtons = (props) => {
     if (props.pages > 10) {
         return (
         <div className="scroll-buttons">
-            <button disabled={displayLeft} onClick={() => props.scroll("endleft")}>{"<<<"}</button>
-            <button disabled={displayLeft} onClick={() => props.scroll("left", 10)}>{"<<"}</button>
-            <button disabled={displayLeft} onClick={() => props.scroll("left", 1)}>{"<"}</button>
+            <button className="scroll-button" disabled={displayLeft} onClick={() => props.scroll("endleft")}>{"<<<"}</button>
+            <button className="scroll-button" disabled={displayLeft} onClick={() => props.scroll("left", 10)}>{"<<"}</button>
+            <button className="scroll-button" disabled={displayLeft} onClick={() => props.scroll("left", 1)}>{"<"}</button>
                 {props.children}
-            <button disabled={displayRight} onClick={() => props.scroll("right", 1)}>{">"}</button>
-            <button disabled={displayRight} onClick={() => props.scroll("right", 10)}>{">>"}</button>
-            <button disabled={displayRight} onClick={() => props.scroll("endright")}>{">>>"}</button>
+            <button className="scroll-button" disabled={displayRight} onClick={() => props.scroll("right", 1)}>{">"}</button>
+            <button className="scroll-button" disabled={displayRight} onClick={() => props.scroll("right", 10)}>{">>"}</button>
+            <button className="scroll-button" disabled={displayRight} onClick={() => props.scroll("endright")}>{">>>"}</button>
         </div>
     )} else return props.children;
 }
