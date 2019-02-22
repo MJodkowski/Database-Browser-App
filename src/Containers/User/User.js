@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../Store/Actions/actions'
 import HTTP from '../../Classes/HTTP';
 import './User.css';
 
@@ -39,7 +41,7 @@ class User extends Component {
                 <div className="user" onClick={this.expandPerson}>
                     <div className="user-header-container">
                         <h2 className="user-header">{this.props.name}</h2>
-                        <button className="delete-button" onClick={(e) => this.props.delete(e, this.props.id)}>Delete User</button>
+                        <button className="delete-button" onClick={(e) => this.props.deleteData(this.props.id, e)}>Delete User</button>
                     </div>
                     <table className={this.state.expanded ? "user-data-list" : ""} >
                         <tbody>
@@ -51,4 +53,11 @@ class User extends Component {
         );
     }
 }
-export default User;
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deleteData: (id, e) => dispatch(actions.deleteData(id, e))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(User);
