@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../Store/Actions/actions';
 
+import PerPage from './PerPage/PerPage';
 import PageButton from '../PageButton/PageButton';
 import './ScrollButtons.css';
 
 
 class ScrollButtons extends Component {
     state = {
-        buttonNumber: this.props.buttonNumber,
         pageButtons: [1, this.props.users.length / this.props.perPage < this.props.buttonNumber
             ? Math.ceil(this.props.users.length / this.props.perPage) : this.props.buttonNumber]
     }
@@ -25,6 +25,10 @@ class ScrollButtons extends Component {
         }
         return buttons;
     };
+    resetPagination = (e) => {
+        this.props.changePerPage(e.target.value);
+        this.setState({ pageButtons: [1, this.props.buttonNumber] })
+    }
     scroll = (direction, increment) => {
         if (direction === 'left' || direction === 'endleft') {
             if (this.state.pageButtons[0] - increment >= 1) {
@@ -36,7 +40,7 @@ class ScrollButtons extends Component {
                     this.props.page : this.state.pageButtons[1] - increment)
             } else if (((this.state.pageButtons[0] - increment) < 1) || direction === 'endleft') {
                 this.setState({
-                    pageButtons: [1, this.state.buttonNumber]
+                    pageButtons: [1, this.props.buttonNumber]
                 });
                 this.props.changePage(1);
             }
@@ -50,13 +54,13 @@ class ScrollButtons extends Component {
                     this.props.page : this.state.pageButtons[0] + increment)
             } else if (((this.state.pageButtons[1] + increment) > this.props.pages) || direction === 'endright') {
                 this.setState({
-                    pageButtons: [this.props.pages - this.state.buttonNumber + 1, this.props.pages]
+                    pageButtons: [this.props.pages - this.props.buttonNumber + 1, this.props.pages]
                 });
                 this.props.changePage(this.props.pages);
             }
     }
     render() {
-        if (this.props.pages > this.state.buttonNumber) {
+        if (this.props.pages > this.props.buttonNumber) {
             return (
                 <div className="scroll-buttons">
                     <button className="scroll-button" disabled={this.state.pageButtons[0] === 1} onClick={() => this.scroll("endleft")}>{"<<<"}</button>
@@ -66,28 +70,14 @@ class ScrollButtons extends Component {
                     <button className="scroll-button" disabled={this.state.pageButtons[1] === this.props.pages} onClick={() => this.scroll("right", 1)}>{">"}</button>
                     <button className="scroll-button" disabled={this.state.pageButtons[1] === this.props.pages} onClick={() => this.scroll("right", 10)}>{">>"}</button>
                     <button className="scroll-button" disabled={this.state.pageButtons[1] === this.props.pages} onClick={() => this.scroll("endright")}>{">>>"}</button>
-                    <select id="page-numbers" onChange={(e) => {
-                        this.props.changePerPage(e.target.value);
-                        this.setState({ pageButtons: [1, this.props.buttonNumber] })
-                    }}>
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select>
-                    <label for="page-numbers">Entries per page</label>
+                    <PerPage resetPagination={this.resetPagination} changePerPage={this.props.changePerPage} />
                 </div>
             )
         } else {
             return (
                 <div>
                     {this.pageButtons()}
-                    <select id="page-numbers" onChange={(e) => this.props.changePerPage(e.target.value)
-                    }>
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select >
-                    <label for="page-numbers">Entries per page</label>
+                    <PerPage />
                 </div>
             )
         }
