@@ -32,20 +32,17 @@ class User extends Component {
         return dataList;
     }
     render() {
-        let dataList = null;
-        if (this.state.userData && this.state.expanded) {
-            dataList = this.listData(this.state.userData);
-        }
+        const { state: {userData, expanded}, props: {name, deleteData, id}, expandPerson, listData} = this;
         return (
             <li className="user-list-item">
-                <div className="user" onClick={this.expandPerson}>
+                <div className="user" onClick={expandPerson}>
                     <div className="user-header-container">
-                        <h2 className="user-header">{this.props.name}</h2>
-                        <button className="delete-button" onClick={(e) => this.props.deleteData(this.props.id, e)}>Delete User</button>
+                        <h2 className="user-header">{name}</h2>
+                        <button className="delete-button" onClick={(e) => deleteData(id, e)}>Delete User</button>
                     </div>
-                    <table className={this.state.expanded ? "user-data-list" : ""} >
+                    <table className={expanded ? "user-data-list" : ""} >
                         <tbody>
-                            {dataList}
+                            {userData && expanded ? listData(userData) : null}
                         </tbody>
                     </table>
                 </div>

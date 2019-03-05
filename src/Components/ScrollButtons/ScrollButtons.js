@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../Store/Actions/actions';
 
 import PerPage from './PerPage/PerPage';
-import PageButton from '../PageButton/PageButton';
+import PageButton from './PageButton/PageButton';
 import './ScrollButtons.css';
 
 
@@ -12,7 +12,7 @@ class ScrollButtons extends Component {
         pageButtons: [1, this.props.users.length / this.props.perPage < this.props.buttonNumber
             ? Math.ceil(this.props.users.length / this.props.perPage) : this.props.buttonNumber]
     }
-    pageButtons = () => {
+    renderPageButtons = () => {
         const buttons = [];
         for (let x = this.state.pageButtons[0]; x <= this.state.pageButtons[1]; x++) {
             x === this.props.page ? buttons.push(<PageButton
@@ -60,23 +60,25 @@ class ScrollButtons extends Component {
             }
     }
     render() {
-        if (this.props.pages > this.props.buttonNumber) {
+        const { props: {pages, buttonNumber, changePerPage}, state: {pageButtons}, scroll, resetPagination, renderPageButtons} = this;
+        
+        if (pages > buttonNumber) {
             return (
                 <div className="scroll-buttons">
-                    <button className="scroll-button" disabled={this.state.pageButtons[0] === 1} onClick={() => this.scroll("endleft")}>{"<<<"}</button>
-                    <button className="scroll-button" disabled={this.state.pageButtons[0] === 1} onClick={() => this.scroll("left", 10)}>{"<<"}</button>
-                    <button className="scroll-button" disabled={this.state.pageButtons[0] === 1} onClick={() => this.scroll("left", 1)}>{"<"}</button>
-                    {this.pageButtons()}
-                    <button className="scroll-button" disabled={this.state.pageButtons[1] === this.props.pages} onClick={() => this.scroll("right", 1)}>{">"}</button>
-                    <button className="scroll-button" disabled={this.state.pageButtons[1] === this.props.pages} onClick={() => this.scroll("right", 10)}>{">>"}</button>
-                    <button className="scroll-button" disabled={this.state.pageButtons[1] === this.props.pages} onClick={() => this.scroll("endright")}>{">>>"}</button>
-                    <PerPage resetPagination={this.resetPagination} changePerPage={this.props.changePerPage} />
+                    <button className="scroll-button" disabled={pageButtons[0] === 1} onClick={() => scroll("endleft")}>{"<<<"}</button>
+                    <button className="scroll-button" disabled={pageButtons[0] === 1} onClick={() => scroll("left", 10)}>{"<<"}</button>
+                    <button className="scroll-button" disabled={pageButtons[0] === 1} onClick={() => scroll("left", 1)}>{"<"}</button>
+                    {renderPageButtons()}
+                    <button className="scroll-button" disabled={pageButtons[1] === pages} onClick={() => scroll("right", 1)}>{">"}</button>
+                    <button className="scroll-button" disabled={pageButtons[1] === pages} onClick={() => scroll("right", 10)}>{">>"}</button>
+                    <button className="scroll-button" disabled={pageButtons[1] === pages} onClick={() => scroll("endright")}>{">>>"}</button>
+                    <PerPage resetPagination={resetPagination} changePerPage={changePerPage} />
                 </div>
             )
         } else {
             return (
                 <div>
-                    {this.pageButtons()}
+                    {renderPageButtons()}
                     <PerPage />
                 </div>
             )

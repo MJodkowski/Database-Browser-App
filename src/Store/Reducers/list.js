@@ -4,7 +4,7 @@ const initialState = {
     pages: 0,
     pageButtonNumber: 10,
     perPage: 10
-}
+};
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
